@@ -1,0 +1,6 @@
+---
+
+- name: Update Repository and Full Upgrade Packages
+  apt:
+    update_cache: yes
+    upgrade: full 

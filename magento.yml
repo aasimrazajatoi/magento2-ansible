@@ -1,0 +1,16 @@
+---
+- hosts: nodes
+  become: yes
+ 
+  
+  roles:
+    - update
+    - mysql
+    - nginx
+    - php
+    - elasticsearch
+    - composer
+    - magento
+
+
+

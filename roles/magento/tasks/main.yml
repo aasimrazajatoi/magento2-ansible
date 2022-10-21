@@ -1,0 +1,75 @@
+---
+
+
+- name: start elasticsearch
+  service: 
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: Set Magento Access Keys for Composer
+  shell: |
+    export COMPOSER_ALLOW_SUPERUSER=1;
+    composer global config http-basic.repo.magento.com "{{ pub_key }}" "{{ pvt_key }}"
+
+- name: Create the Magento Open Source Project
+  shell: |
+    export COMPOSER_ALLOW_SUPERUSER=1;
+    composer create-project --repository=https://repo.magento.com/ magento/project-community-edition {{ magento_dir }}
+
+- name: Set Files Permissions to g+w
+  shell: find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
+  args:
+    chdir: "{{ magento_dir }}"
+
+- name: Set Directories Permissions to g+ws
+  shell: find var generated vendor pub/static pub/media app/etc -type d -exec chmod g+ws {} \;
+  args:
+    chdir: "{{ magento_dir }}"
+
+- name: Set Files and Directories Group User
+  file:
+    dest: "{{ magento_dir }}"
+    group: www-data
+    recurse: yes
+
+- name: Set Permission u+x to bin/magento
+  file:
+    path: "{{ magento_dir }}/bin/magento"
+    mode: u+x
+  notify: restart elasticsearch
+
+
+- name: Install Magento
+  shell: |
+    php bin/magento setup:install \
+    --base-url="{{ base_url }}" \
+    --db-host="{{ db_host }}" \
+    --db-name="{{ db_name }}" \
+    --db-user="{{ user_name }}" \
+    --db-password="{{ user_password }}" \
+    --backend-frontname="{{ backend_frontname }}" \
+    --admin-firstname="{{ admin_firstname }}" \
+    --admin-lastname="{{ admin_lastname }}" \
+    --admin-email="{{ admin_email }}" \
+    --admin-user="{{ admin_user }}" \
+    --admin-password="{{ admin_password }}" \
+    --language="{{ language }}" \
+    --currency="{{ currency }}" \
+    --timezone="{{ timezone }}" \
+    --use-rewrites="{{ use_rewrites }}"
+  args:
+    chdir: "{{ magento_dir }}"
+
+- name: 
+  shell: |
+    sudo -u www-data bin/magento module:disable Magento_TwoFactorAuth
+    sudo -u www-data bin/magento cache:flush
+  args:
+    chdir: "{{ magento_dir }}"
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
