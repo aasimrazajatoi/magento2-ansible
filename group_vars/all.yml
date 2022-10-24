@@ -1,26 +1,26 @@
 ---
 # vars file for mysql_role
 user_name: 'magento'
-root_password_new: 'Academy*2345'
-root_password_old: 'Academy*2345'
-user_password: 'magento*2345'
+root_password_new: ''
+root_password_old: ''
+user_password: ''
 db_name: 'magentodb'
-pub_key: '351c380b27dd2bdcc4839de9a2565401'
-pvt_key: 'f3fd48b6261f323ae9079dc2bf746833'
+pub_key: ''
+pvt_key: ''
 db_host: 'localhost'
 
 magento_dir: /opt/magento2/
 magento_mode: default
 
-base_url: 'http://3.28.120.19/'
+base_url: ''
 use_rewrites: 1
 
 language: en_GB
 currency: GBP
 timezone: Europe/London
-backend_frontname: aasim
-admin_firstname: Aasim
-admin_lastname: Raza
-admin_email: aasimraza.ddevops@gmail.com
-admin_user: aasim
-admin_password: admin**1122
+backend_frontname: 
+admin_firstname: 
+admin_lastname: 
+admin_email: 
+admin_user:
+admin_password: 
