@@ -15,7 +15,7 @@
 - name: Create the Magento Open Source Project
   shell: |
     export COMPOSER_ALLOW_SUPERUSER=1;
-    composer create-project --repository=https://repo.magento.com/ magento/project-community-edition {{ magento_dir }}
+    composer create-project --repository=https://repo.magento.com/ magento/project-community-edition=2.4.3 {{ magento_dir }}
 
 - name: Set Files Permissions to g+w
   shell: find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;
