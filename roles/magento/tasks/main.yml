@@ -12,10 +12,19 @@
     export COMPOSER_ALLOW_SUPERUSER=1;
     composer global config http-basic.repo.magento.com "{{ pub_key }}" "{{ pvt_key }}"
 
-- name: Create the Magento Open Source Project
+# - name: Create the Magento Open Source Project
+#   shell: |
+#     export COMPOSER_ALLOW_SUPERUSER=1;
+#     composer create-project --repository=https://repo.magento.com/ magento/project-community-edition=2.4.3 {{ magento_dir }}
+
+
+- name: download magento files 
   shell: |
-    export COMPOSER_ALLOW_SUPERUSER=1;
-    composer create-project --repository=https://repo.magento.com/ magento/project-community-edition=2.4.3 {{ magento_dir }}
+    mkdir magento_dir
+    cd {{ magento_dir }}
+    wget https://github.com/magento/magento2/archive/{{ magento_version }}.tar.gz
+    tar -zxvf {{ magento_version }}.tar.gz {{ magento_dir}}
+    rm {{ magento_version }}.tar.gz
 
 - name: Set Files Permissions to g+w
   shell: find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} \;

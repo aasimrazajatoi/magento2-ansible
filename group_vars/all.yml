@@ -11,7 +11,7 @@ db_host: 'localhost'
 
 magento_dir: /opt/magento2/
 magento_mode: default
-
+magento_ver: 2.4.3
 base_url: ''
 use_rewrites: 1
 
